@@ -415,22 +415,26 @@ check_config = (context,pkg)->
     ignore: [],
   }
   context.config = _.extend(defaults, pkg.docco_husky || {})
+  
   # Build the ignore set.
-  cwd = process.cwd()
-  ignored = new RegExp (context.config.ignore.map (pth) ->
-    "^" + path.normalize (pth.replace /\/+$/, '')
-    ).join("|")
-  context.sources = filter_ignored context.sources, ignored
+  console.log context.sources.length
+  context.sources = filter_ignored context
+  console.log context.sources.length
 
-filter_ignored = (sources, ignored) ->
-  sources.filter (p) ->
+
+filter_ignored = (context) ->
+  ignored = new RegExp (context.config.ignore.map (pth) ->
+    "^\\./" + path.normalize (pth.replace /\/+$/, '')
+    ).join("|")
+  console.log ignored
+  context.sources.filter (p) ->
     not (p.match(ignored))
 
 parse_args (sources, project_name, raw_paths) ->
   # Rather than relying on globals, let's pass around a context w/ misc info
   # that we require down the line.
   context = sources: sources, options: { project_name: project_name }
-  
+  console.log context.sources.length
   package_path = process.cwd() + '/package.json'
   try
     package_json = if file_exists(package_path) then JSON.parse(fs.readFileSync(package_path).toString()) else {}
@@ -439,11 +443,12 @@ parse_args (sources, project_name, raw_paths) ->
     console.log err
 
   check_config(context, package_json)
+  console.log context.sources.length
 
   ensure_directory context.config.output_dir, ->
     generate_readme(context, raw_paths,package_json)
     fs.writeFile "#{context.config.output_dir}/docco.css", fs.readFileSync(context.config.css).toString()
-    files = sources[0..sources.length]
+    files = context.sources[0..sources.length]
     next_file = -> generate_documentation files.shift(), context, next_file if files.length
     next_file()
     if context.config.content_dir then generate_content context, context.config.content_dir
