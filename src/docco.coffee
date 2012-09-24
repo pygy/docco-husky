@@ -273,7 +273,7 @@ walk     = require 'walk'
 # add another language to Docco's repertoire, add it here.
 languages =
   '.coffee':
-    name: 'coffee-script', symbol: '#'
+    name: 'coffee-script', symbol: '# ', multi_start: "###", multi_end: "###"
   '.js':
     name: 'javascript', symbol: '//', multi_start: "/*", multi_end: "*/"
   '.rb':
@@ -307,11 +307,11 @@ for ext, l of languages
   if l.multi_start == "/*"
     l.multi_start_matcher = new RegExp(/^[\s]*\/\*[.]*/)
   else
-    l.multi_start_matcher = new RegExp(/a^/)
+    l.multi_start_matcher = l.multi_start ? new RegExp('^[\\s]*'+l.multi_start) : new RegExp(/a^/)
   if l.multi_end == "*/"
     l.multi_end_matcher = new RegExp(/.*\*\/.*/)
   else
-    l.multi_end_matcher = new RegExp(/a^/)
+    l.multi_end_matcher = new l.multi_end ? new RegExp(l.multi_end) : new RegExp(/a^/)
 
 
 # Get the current language we're documenting, based on the extension.
