@@ -385,7 +385,7 @@ parse_args = (callback) ->
 
   # Rather than deal with building a recursive tree walker via the fs module,
   # let's save ourselves typing and testing and drop to the shell
-  exec "find #{roots} -type f \\( #{lang_filter} \\)", (err, stdout) ->
+  exec "find \"#{roots}\" -type f \\( #{lang_filter} \\)", (err, stdout) ->
     throw err if err
 
     # Don't include hidden files, either
@@ -411,9 +411,20 @@ check_config = (context,pkg)->
 
     # source directory for any additional markdown documents including a
     # index.md that will be included in the main generated page
-    content_dir: null
+    content_dir: null,
+    ignore: [],
   }
   context.config = _.extend(defaults, pkg.docco_husky || {})
+  # Build the ignore set.
+  cwd = process.cwd()
+  ignored = new RegExp (context.config.ignore.map (pth) ->
+    "^" + path.normalize (pth.replace /\/+$/, '')
+    ).join("|")
+  context.sources = filter_ignored context.sources, ignored
+
+filter_ignored = (sources, ignored) ->
+  sources.filter (p) ->
+    not (p.match(ignored))
 
 parse_args (sources, project_name, raw_paths) ->
   # Rather than relying on globals, let's pass around a context w/ misc info
