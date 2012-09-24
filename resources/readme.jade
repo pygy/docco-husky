@@ -1,5 +1,6 @@
 - var root_path = relative_base(file_path, context)
-- root_path = (root_path == "./") ? root_path : root_path.replace(/[^\/]+/g, '..')
+- root_path = (root_path == "./") ? root_path : root_path.replace(/[^\/]+/g, '..').slice (1,-1);
+- console.log(root_path);
 - var emailRegex = new RegExp(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
 - function gravatarDecorator(str, gravatar) {
 -   // pretty lame way of doing this for now
