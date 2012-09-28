@@ -278,6 +278,8 @@ languages =
     name: 'javascript', symbol: '//', multi_start: "/*", multi_end: "*/"
   '.rb':
     name: 'ruby', symbol: '#'
+  '.sql':
+    name: 'SQL', symbol: '--'
   '.py':
     name: 'python', symbol: '#'
   '.java':
