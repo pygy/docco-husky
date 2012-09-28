@@ -309,11 +309,11 @@ for ext, l of languages
   if l.multi_start == "/*"
     l.multi_start_matcher = new RegExp(/^[\s]*\/\*[.]*/)
   else
-    l.multi_start_matcher = l.multi_start ? new RegExp('^[\\s]*'+l.multi_start) : new RegExp(/a^/)
+    l.multi_start_matcher = if l.multi_start then new RegExp('^[\\s]*'+l.multi_start) else new RegExp(/a^/)
   if l.multi_end == "*/"
     l.multi_end_matcher = new RegExp(/.*\*\/.*/)
   else
-    l.multi_end_matcher = new l.multi_end ? new RegExp(l.multi_end) : new RegExp(/a^/)
+    l.multi_end_matcher = new if l.multi_end then new RegExp(l.multi_end) else new RegExp(/a^/)
 
 
 # Get the current language we're documenting, based on the extension.
