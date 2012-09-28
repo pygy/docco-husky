@@ -377,7 +377,8 @@ parse_args = (callback) ->
 
   # Collect all of the directories or file paths to then pass onto the 'find'
   # command
-  roots = (a.replace(/\/+$/, '') for a in args)
+  roots =  ((console.log a) or a.replace(/\/+$/, '') for a in args)
+  console.log roots
   roots = roots.join(" ")
     
   # Only include files that we know how to handle

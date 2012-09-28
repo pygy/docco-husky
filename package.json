@@ -1,5 +1,5 @@
 {
-  "name": "docco-husky-bluelog",
+  "name": "docco-husky",
   "description": "Generated static project documentation primarily for node.js projects. A fork of Docco",
   "keywords": [
     "documentation",
