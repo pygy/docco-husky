@@ -313,7 +313,7 @@ for ext, l of languages
   if l.multi_end == "*/"
     l.multi_end_matcher = new RegExp(/.*\*\/.*/)
   else
-    l.multi_end_matcher = new if l.multi_end then new RegExp(l.multi_end) else new RegExp(/a^/)
+    l.multi_end_matcher = if l.multi_end then new RegExp(l.multi_end) else new RegExp(/a^/)
 
 
 # Get the current language we're documenting, based on the extension.
